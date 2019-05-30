@@ -32,9 +32,11 @@ router.get('/appointment',(req, res) => {
     if(!req.query.id && !req.query.client){
         // console.log(AppointmentModel.find())
         AppointmentModel.find({} , (err, appointments)=>{
-            // console.log(appointments)
-            return res.status(200).send({"count":appointments.length,"data":appointments})
-        })
+            if(!err) return res.status(200).send({"count":appointments.length,"data":appointments})
+            else{
+                console.log(err)
+                return res.status(400).send("INVALID")
+            } })
     }
     else
     {
