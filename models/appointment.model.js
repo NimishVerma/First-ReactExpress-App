@@ -7,6 +7,8 @@ const password = ''
 
 mongoose.connect(`mongodb://localhost:27017/${database}`)
 
+const moment = require('moment-timezone');
+const dateIndia = moment.tz(Date.now(), "Asia/Kolkata");
 
 let AppointmentSchema = new mongoose.Schema({
     client: {
@@ -14,8 +16,10 @@ let AppointmentSchema = new mongoose.Schema({
         required: true
     } ,
     phone : String,
-    time: Date,
-
+    time: {
+        type: Date,
+        default: dateIndia
+    }
 }, {
     timestamps:true
 })

@@ -32,6 +32,7 @@ class AppointmentInput extends Component{
             .then(res => {
                 console.log(res)
                 console.log(res.data)
+                window.location.reload()
             })
     }
 
@@ -51,7 +52,7 @@ class AppointmentInput extends Component{
                 <label>
                     Time:
                 </label>
-                <input type="date" name="time" onChange={this.handleChangeTime}/>
+                <input type="datetime-local" name="time" onChange={this.handleChangeTime}/>
         <button type="submit">Add</button>
             </form>
         )

@@ -13,8 +13,13 @@ class Appointments extends Component{
     componentDidMount(){
         
         fetch('/appointment').then(res => res.json())
-        .then(appointments => this.setState({appointments},()=>console.log("appointments fetched,,"
-        ,appointments.data.map((appointment)=>appointment.client))))
+        .then(appointments => this.setState({appointments:appointments.data},()=>
+        {
+        console.log("appointments fetched,,"
+        ,this.state.appointments.map((appointment)=>appointment.client))
+        console.log(this.state.appointments)
+        }
+        ))
     }
 
     handleDelete = (e, x) => {
@@ -23,7 +28,13 @@ class Appointments extends Component{
         .then(res=>{
             console.log(res)
             // this.forceUpdate()
-            window.location.reload()
+            const index = this.state.appointments.findIndex((appointment)=>{
+                return appointment._id === x
+            })
+            const appointments = Object.assign([], this.state.appointments)
+            appointments.splice(index, 1)
+            this.setState({appointments:appointments})
+            // window.location.reload()    
 
         })
 
@@ -31,12 +42,12 @@ class Appointments extends Component{
 
     render(){
     
-        if(this.state.appointments.data){
+        if(this.state.appointments){
         return (
             <div>
                 <h2> Appointments </h2>
                 <ul>
-                    {this.state.appointments.data.map((appointment)=>
+                    {this.state.appointments.map((appointment)=>
                         <li key={appointment._id}>{appointment.client } {appointment._id} {appointment.phone}    {}
                          {/* at {new Date(appointment.time).getDate()}/{new Date(appointment.time).getMonth()+1}
                         /{new Date(appointment.time).getFullYear()} on {new Date(appointment.time).getUTCHours()}:{new Date(appointment.time).getUTCMinutes()} */}
@@ -48,7 +59,7 @@ class Appointments extends Component{
                             hour:'2-digit',
                             minute:'2-digit',
                             hour12:true,
-                            timeZone:'UTC'
+                            timeZone:'Asia/Kolkata'
 
 
                         }).format(new Date(appointment.time))}
